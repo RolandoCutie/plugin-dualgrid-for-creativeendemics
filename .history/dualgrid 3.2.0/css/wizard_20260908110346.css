@@ -1,0 +1,575 @@
+/* ============================================
+   DUALGRID - Tour Finder Wizard
+   ============================================ */
+
+/* ---------- Botón abrir ---------- */
+#openWizard {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #E76F51;
+  color: #FAFAF8;
+  border: none;
+  border-radius: 4px;
+  padding: 14px 28px;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s;
+  box-shadow: 0 4px 14px rgba(231, 111, 81, 0.25);
+}
+#openWizard:hover {
+  background: #d05c3e;
+  transform: translateY(-1px);
+}
+
+/* ---------- Overlay ---------- */
+.dg-wizard-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #F5F5F0;
+  overflow-y: auto;
+  animation: dgFadeIn 0.3s ease;
+}
+@keyframes dgFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Contenido ---------- */
+.dg-wizard-content {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 100px 24px 80px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ---------- Pregunta ---------- */
+.dg-question-title {
+  font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+  font-weight: 900;
+  font-size: 36px;
+  line-height: 1.15;
+  color: #18382E;
+  margin: 0;
+}
+@media (min-width: 1024px) {
+  .dg-question-title { font-size: 48px; }
+}
+.dg-question-sub {
+  margin-top: 12px;
+  font-family: 'Fraunces', 'Georgia', serif;
+  font-size: 14px;
+  color: rgba(42, 42, 42, 0.6);
+}
+
+.dg-question-error {
+  margin-top: 18px;
+  color: #b42318;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ---------- Opciones ---------- */
+.dg-options-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 40px;
+}
+@media (min-width: 640px) {
+  .dg-options-grid { grid-template-columns: 1fr 1fr; }
+}
+.dg-options-grid.dg-months { grid-template-columns: repeat(3, 1fr); }
+@media (min-width: 640px) {
+  .dg-options-grid.dg-months { grid-template-columns: repeat(4, 1fr); }
+}
+
+.dg-option-card {
+  position: relative;
+  padding: 20px;
+  text-align: left;
+  border-radius: 4px;
+  border: 2px solid #F5F5F0;
+  background: #FAFAF8;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+}
+.dg-option-card:hover { border-color: #2E6A4F; }
+.dg-option-card.dg-selected {
+  border-color: #E76F51;
+  background: rgba(231, 111, 81, 0.05);
+}
+.dg-option-label {
+  font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: #18382E;
+}
+.dg-option-desc {
+  font-family: 'Fraunces', 'Georgia', serif;
+  font-size: 12px;
+  color: rgba(42, 42, 42, 0.5);
+  margin-top: 2px;
+}
+.dg-check-circle {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #E76F51;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: #FAFAF8;
+  font-size: 12px;
+}
+.dg-option-card.dg-selected .dg-check-circle { display: flex; }
+
+/* ---------- Navegación ---------- */
+.dg-nav-container {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dg-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(24, 56, 46, 0.6);
+  transition: color 0.2s;
+}
+.dg-back-btn:hover { color: #18382E; }
+.dg-back-btn.dg-hidden { visibility: hidden; pointer-events: none; }
+.dg-continue-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #E76F51;
+  color: #FAFAF8;
+  border: none;
+  border-radius: 4px;
+  padding: 14px 28px;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 14px rgba(231, 111, 81, 0.25);
+}
+.dg-continue-btn:hover {
+  background: #d05c3e;
+  transform: translateY(-1px);
+}
+
+/* ---------- Barra de progreso ---------- */
+.dg-progress-bar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #F5F5F0;
+  z-index: 10000;
+}
+.dg-progress-bar-fill {
+  height: 100%;
+  background: #E76F51;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+/* ---------- Step indicator ---------- */
+.dg-step-indicator {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 10000;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(24, 56, 46, 0.5);
+}
+
+/* ---------- Botón cerrar ---------- */
+.dg-wizard-close {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 10000;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(24, 56, 46, 0.05);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #18382E;
+  transition: background 0.2s;
+  line-height: 1;
+}
+.dg-wizard-close:hover { background: rgba(24, 56, 46, 0.1); }
+
+/* ---------- Resultado ---------- */
+.dg-result-screen {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.dg-result-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #63B78B;
+}
+.dg-check-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #63B78B;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+.dg-result-title {
+  font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+  font-weight: 900;
+  font-size: 48px;
+  line-height: 1.1;
+  color: #18382E;
+  margin: 0;
+}
+.dg-result-title em {
+  font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+  font-style: italic;
+  color: #2E6A4F;
+  font-weight: 900;
+}
+.dg-result-desc {
+  margin-top: 16px;
+  font-family: 'Fraunces', 'Georgia', serif;
+  font-size: 16px;
+  color: rgba(42, 42, 42, 0.6);
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+.dg-result-card {
+  margin-top: 32px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #18382E;
+}
+.dg-result-card-image {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.dg-result-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.dg-result-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #18382E 0%, rgba(24, 56, 46, 0.4) 50%, transparent 100%);
+}
+.dg-result-card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  text-align: left;
+}
+.dg-result-card-coords {
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(250, 250, 248, 0.6);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.dg-result-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(250, 250, 248, 0.8);
+  flex-wrap: wrap;
+}
+.dg-result-actions {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.dg-btn-forest {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #18382E;
+  color: #FAFAF8;
+  text-decoration: none;
+  border-radius: 4px;
+  padding: 14px 28px;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: all 0.3s;
+  cursor: pointer;
+  border: none;
+}
+.dg-btn-forest:hover {
+  background: #2E6A4F;
+  transform: translateY(-1px);
+}
+.dg-btn-terracotta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #E76F51;
+  color: #FAFAF8;
+  text-decoration: none;
+  border-radius: 4px;
+  padding: 14px 28px;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: all 0.3s;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 4px 14px rgba(231, 111, 81, 0.25);
+}
+.dg-btn-terracotta:hover {
+  background: #d05c3e;
+  transform: translateY(-1px);
+}
+.dg-retake-btn {
+  margin-top: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(24, 56, 46, 0.5);
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.dg-retake-btn:hover { color: #18382E; }
+
+.dg-result-summary {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.dg-result-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(46, 106, 79, 0.08);
+  color: #2E6A4F;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dg-result-priority {
+  margin-top: 40px;
+  text-align: left;
+}
+
+.dg-result-section-title {
+  margin: 0 0 16px;
+  font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #18382E;
+}
+
+.dg-result-program-grid,
+.dg-result-tour-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .dg-result-program-grid,
+  .dg-result-tour-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.dg-result-program-card,
+.dg-result-tour-card {
+  display: block;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #FFFFFF;
+  text-decoration: none;
+  box-shadow: 0 12px 30px rgba(24, 56, 46, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dg-result-program-card:hover,
+.dg-result-tour-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 34px rgba(24, 56, 46, 0.14);
+}
+
+.dg-result-program-card__image,
+.dg-result-tour-card__image {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.dg-result-program-card__image img,
+.dg-result-tour-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.dg-result-program-card__body,
+.dg-result-tour-card__body {
+  padding: 18px;
+}
+
+.dg-result-program-card__body h3,
+.dg-result-tour-card__body h3 {
+  margin: 10px 0 8px;
+  font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #18382E;
+}
+
+.dg-result-program-card__body p,
+.dg-result-tour-card__body p {
+  margin: 0;
+  color: rgba(24, 56, 46, 0.72);
+  line-height: 1.6;
+}
+
+.dg-result-tour-card__program {
+  display: inline-flex;
+  margin-bottom: 10px;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #E76F51;
+}
+
+.dg-result-tour-card__meta {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(24, 56, 46, 0.74);
+}
+
+
+/* ============================================
+   BOTONES DEL WIZARD (shortcode + Elementor)
+   ============================================ */
+
+/* Botón del shortcode [tour_wizard] */
+.dg-wizard-btn,
+/* Botón externo de Elementor con clase dg-wizard-trigger */
+.dg-wizard-trigger,
+.dg-tailor-made-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #E76F51;
+    color: #FAFAF8;
+    border: none;
+    border-radius: 4px;
+    padding: 14px 28px;
+    font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 4px 14px rgba(231, 111, 81, 0.25);
+}
+
+.dg-wizard-btn:hover,
+.dg-wizard-trigger:hover,
+.dg-tailor-made-trigger:hover {
+    background: #d05c3e;
+    transform: translateY(-1px);
+}
+
+/* Por si Elementor le pone estilos propios que interfieren */
+.dg-wizard-trigger:focus,
+.dg-tailor-made-trigger:focus {
+    outline: none;
+}

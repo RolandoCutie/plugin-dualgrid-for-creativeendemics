@@ -1,0 +1,309 @@
+/* ============================================
+   DUALGRID - Testimonials Carousel
+   ============================================ */
+
+.tp-carousel {
+    font-family: 'Fraunces', 'Georgia', serif;
+    width: 100vw;
+    height: 100vh;
+    background: #1B4322;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+.tp-inner {
+    text-align: center;
+    padding: 40px 24px;
+    max-width: 900px;
+    width: 100%;
+    position: relative;
+}
+
+.tp-label {
+    font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: #8fbfa3;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-weight: 500;
+}
+
+.tp-label::before,
+.tp-label::after {
+    content: '';
+    flex: 0 0 32px;
+    height: 1px;
+    background: #8fbfa3;
+    opacity: 0.5;
+}
+
+.tp-title {
+    font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 900;
+    color: #fff;
+    margin: 0 0 8px;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+
+.tp-title em {
+    font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+    color: #7dd3a8;
+    font-style: italic;
+    font-weight: 900;
+}
+
+.tp-quote-icon {
+    font-family: 'Fraunces', 'Georgia', serif;
+    font-size: 64px;
+    color: #c17f59;
+    line-height: 1;
+    margin: 24px 0 16px;
+    font-weight: 300;
+}
+
+.tp-quote {
+    font-family: 'Fraunces', 'Georgia', serif;
+    font-size: clamp(17px, 2vw, 23px);
+    line-height: 1.7;
+    color: #e8f5ee;
+    max-width: 700px;
+    margin: 0 auto 32px;
+    font-style: italic;
+    font-weight: 300;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tp-avatar {
+    display: block;
+    margin: 0 auto 16px auto;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #7dd3a8;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.tp-name {
+    font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+    font-size: 17px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.tp-location {
+    font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    color: #8fbfa3;
+    margin-bottom: 12px;
+    font-weight: 400;
+}
+
+.tp-stars {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.tp-star {
+    color: #e8b86d;
+    font-size: 16px;
+}
+
+.tp-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.tp-dot {
+    width: 24px;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0;
+}
+
+.tp-dot.active {
+    background: #e07a5f;
+    width: 32px;
+}
+
+.tp-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: background 0.2s;
+}
+
+.tp-nav:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.tp-prev {
+    left: 24px;
+}
+
+.tp-next {
+    right: 24px;
+}
+
+.tp-fade {
+    animation: tpFadeIn 0.5s ease;
+}
+
+@keyframes tpFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 640px) {
+    .tp-nav {
+        display: none;
+    }
+}
+
+/* ============================================
+   ANIMACIONES POR SCROLL — TESTIMONIALS
+   ============================================ */
+
+.tp-inner .tp-label,
+.tp-inner .tp-title {
+    opacity: 0;
+    transform: translateY(40px);
+    filter: blur(8px);
+    transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tp-inner.dg-in-view .tp-label {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition-delay: 0.10s;
+}
+
+.tp-inner.dg-in-view .tp-title {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition-delay: 0.25s;
+}
+
+/* ============================================
+   AVATAR CIRCULAR + ANIMACIÓN DE ENTRADA
+   ============================================ */
+
+/* Refuerzo de circularidad perfecta */
+.tp-avatar {
+    border-radius: 50% !important;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Keyframes para las animaciones de slide */
+@keyframes tpFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes tpAvatarPop {
+    from {
+        opacity: 0;
+        transform: scale(0.5) rotate(-12deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* Estado base: elementos ocultos hasta que .tp-active se aplique */
+.tp-slide-wrap .tp-quote-icon,
+.tp-slide-wrap .tp-quote,
+.tp-slide-wrap .tp-avatar,
+.tp-slide-wrap .tp-name,
+.tp-slide-wrap .tp-location,
+.tp-slide-wrap .tp-stars {
+    opacity: 0;
+}
+
+/* Stagger de animaciones cuando el slide ya entró al viewport */
+.tp-slide-wrap.dg-in-view.tp-active .tp-quote-icon {
+    animation: tpFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.tp-slide-wrap.dg-in-view.tp-active .tp-quote {
+    animation: tpFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+/* Avatar: efecto pop con rebote y rotación */
+.tp-slide-wrap.dg-in-view.tp-active .tp-avatar {
+    animation: tpAvatarPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.35s both;
+}
+
+.tp-slide-wrap.dg-in-view.tp-active .tp-name {
+    animation: tpFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+}
+
+.tp-slide-wrap.dg-in-view.tp-active .tp-location {
+    animation: tpFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
+}
+
+.tp-slide-wrap.dg-in-view.tp-active .tp-stars {
+    animation: tpFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both;
+}
+
+/* Hover sutil en el avatar */
+.tp-avatar:hover {
+    transform: scale(1.08) !important;
+    box-shadow: 0 8px 24px rgba(125, 211, 168, 0.3);
+    border-color: #e07a5f;
+    transition: all 0.3s ease !important;
+}

@@ -1,0 +1,263 @@
+/* ============================================================
+   CF7 — Integración con diseño Wildendemics
+   ============================================================ */
+
+/* Hacer que CF7 respete tu grid */
+.we-cf7-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.we-modal__content {
+    padding: 0;
+    border-radius: 22px;
+    overflow: hidden;
+    max-width: 760px;
+    background: #f8faf8;
+    box-shadow: 0 30px 80px rgba(10, 29, 24, 0.18);
+}
+
+.we-modal__header {
+    padding: 28px 32px 18px;
+    background: linear-gradient(180deg, #193f34 0%, #163a2d 100%);
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.we-modal__logo {
+    display: block;
+    width: 220px;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 14px;
+}
+
+.we-modal__badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    color: rgba(255,255,255,0.9);
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-size: 11px;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+}
+
+.we-modal__body {
+    padding: 28px 32px 32px;
+}
+
+.we-modal__title {
+    margin: 0 0 8px;
+    color: #1a3a2f;
+    font-size: clamp(26px, 2vw, 32px);
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+}
+
+.we-modal__subtitle {
+    margin: 0 0 24px;
+    color: #586872;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.we-modal__form-wrap {
+    position: relative;
+}
+
+.we-cf7-form .wpcf7-form {
+    display: grid;
+    gap: 18px;
+}
+
+.we-cf7-form .wpcf7-form > p,
+.we-cf7-form .wpcf7-form .we-form-grid,
+.we-cf7-form .wpcf7-form .we-form-field,
+.we-cf7-form .wpcf7-form .wpcf7-form-control-wrap {
+    margin: 0;
+}
+
+.we-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 16px;
+}
+
+.we-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: #18372e;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.we-form-field.we-form-full {
+    grid-column: 1 / -1;
+}
+
+.we-form-field label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a3a2f;
+}
+
+.we-cf7-form .wpcf7-form-control-wrap {
+    display: block;
+    width: 100%;
+}
+
+.we-cf7-form input[type="text"],
+.we-cf7-form input[type="email"],
+.we-cf7-form input[type="tel"],
+.we-cf7-form input[type="date"],
+.we-cf7-form input[type="number"],
+.we-cf7-form select,
+.we-cf7-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d7e0dc;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 48px;
+    background: #fff;
+    color: #1f2937;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.we-cf7-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.we-cf7-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 44px;
+    background-image: linear-gradient(45deg, transparent 50%, #1a3a2f 50%), linear-gradient(135deg, #1a3a2f 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(50% - 3px), calc(100% - 14px) calc(50% - 3px);
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+}
+
+.we-cf7-form input:focus,
+.we-cf7-form select:focus,
+.we-cf7-form textarea:focus {
+    outline: none;
+    border-color: #1a3a2f;
+    box-shadow: 0 0 0 3px rgba(26,58,47,0.08);
+}
+
+.we-cf7-form select option {
+    color: #1f2937;
+}
+
+.we-cf7-form input[type="submit"],
+.we-cf7-form button[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 180px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #1a3a2f 0%, #2d6a4f 100%);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.we-cf7-form input[type="submit"]:hover,
+.we-cf7-form button[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 24px rgba(26,58,47,0.18);
+}
+
+.we-cf7-form .wpcf7-list-item {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.we-cf7-form .wpcf7-list-item-label {
+    font-weight: 500;
+    color: #334155;
+}
+
+@media (max-width: 640px) {
+    .we-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .we-modal__header,
+    .we-modal__body {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .we-modal__content {
+        max-width: 100%;
+    }
+}
+
+/* Spinner de CF7 */
+.wpcf7-spinner {
+    margin-left: 12px;
+    border: 3px solid rgba(224,122,95,0.2);
+    border-top-color: #e07a5f;
+}
+
+/* Mensajes de respuesta */
+.wpcf7-response-output {
+    border: none !important;
+    margin: 16px 0 0 0 !important;
+    padding: 16px 20px !important;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Éxito */
+.wpcf7-form.sent .wpcf7-response-output {
+    background: #2d6a4f;
+    color: #fff;
+}
+
+/* Error / Validación */
+.wpcf7-form.invalid .wpcf7-response-output,
+.wpcf7-form.unaccepted .wpcf7-response-output,
+.wpcf7-form.failed .wpcf7-response-output {
+    background: #c62828;
+    color: #fff;
+}
+
+/* Campos con error */
+.wpcf7-not-valid {
+    border-color: #c62828 !important;
+}
+
+.wpcf7-not-valid-tip {
+    color: #c62828;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* reCAPTCHA badge (opcional: ocultar si molesta, Google permite si hay aviso) */
+.grecaptcha-badge {
+    visibility: hidden;
+    opacity: 0;
+}

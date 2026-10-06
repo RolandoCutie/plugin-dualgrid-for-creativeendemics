@@ -1,0 +1,281 @@
+/* ============================================
+   DUALGRID - Hero Slider
+   ============================================ */
+
+.dg-hero-slider {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Cada slide */
+.dg-hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.2s ease-in-out, visibility 1.2s;
+    z-index: 1;
+}
+
+.dg-hero-slide.dg-active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+}
+
+/* Imagen de fondo + Ken Burns */
+.dg-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transform: scale(1);
+}
+
+.dg-hero-slide.dg-active .dg-hero-bg {
+    animation: dgKenBurns 8s ease-out forwards;
+}
+
+@keyframes dgKenBurns {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.15); }
+}
+
+/* Overlay muy ligero — casi invisible para no oscurecer las imágenes */
+.dg-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.35) 0%,
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0.01) 100%
+    );
+    z-index: 2;
+}
+
+/* Contenido de texto — con fondo semi-transparente para legibilidad */
+.dg-hero-content {
+    position: relative;
+    z-index: 3;
+    max-width: 600px;
+    margin-left: 16%;
+    padding-top: 29vh;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    color: #ffffff;
+    /* Fondo oscuro semi-transparente solo detrás de los textos */
+    background: rgba(26, 58, 47, 0.68);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+}
+
+/* Título principal — Jost Black */
+.dg-hero-title {
+    font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+    font-weight: 900;
+    font-size: 80px;
+    line-height: 1.05;
+    margin: 0 0 15px 0;
+    color: #ffffff;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease 0.3s;
+}
+
+/* Subtítulo en cursiva — Fraunces */
+.dg-hero-subtitle {
+    font-family: 'Fraunces', 'Georgia', serif;
+    font-size: 26px;
+    font-style: italic;
+    font-weight: 400;
+    color: #5DBE8B;
+    margin: 0 0 25px 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease 0.5s;
+}
+
+/* Descripción — Fraunces */
+.dg-hero-desc {
+    font-family: 'Fraunces', 'Georgia', serif;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 35px;
+    max-width: 480px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease 0.7s;
+}
+
+/* ============================================
+   ANIMACIONES DE ENTRADA MEJORADAS
+   ============================================ */
+
+/* Estado inicial: todo oculto y desplazado */
+.dg-hero-slide .dg-hero-title {
+    opacity: 0;
+    transform: translateY(60px) scale(0.96);
+    filter: blur(12px);
+    transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dg-hero-slide .dg-hero-subtitle {
+    opacity: 0;
+    transform: translateX(-50px);
+    filter: blur(8px);
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: 0.25s;
+}
+
+.dg-hero-slide .dg-hero-desc {
+    opacity: 0;
+    transform: translateY(40px);
+    filter: blur(6px);
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: 0.45s;
+}
+
+.dg-hero-slide .dg-hero-buttons {
+    opacity: 0;
+    transform: scale(0.85) translateY(30px);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: 0.65s;
+}
+
+/* Estado activo: revelado */
+.dg-hero-slide.dg-active .dg-hero-title {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+}
+
+.dg-hero-slide.dg-active .dg-hero-subtitle {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+}
+
+.dg-hero-slide.dg-active .dg-hero-desc {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+.dg-hero-slide.dg-active .dg-hero-buttons {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+/* ============================================
+   BARRA DE PROGRESO
+   ============================================ */
+.dg-hero-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    z-index: 20;
+    pointer-events: none;
+}
+
+.dg-hero-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #E76F51;
+    box-shadow: 0 0 12px rgba(231, 111, 81, 0.6);
+}
+
+/* Botones */
+.dg-hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease 0.9s;
+}
+
+.dg-hero-slide.dg-active .dg-hero-buttons {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dg-hero-btn {
+    display: inline-block;
+    padding: 16px 32px;
+    font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.dg-hero-btn-primary {
+    background-color: #E76F51;
+    color: #ffffff;
+    border: 2px solid #E76F51;
+}
+
+.dg-hero-btn-primary:hover {
+    background-color: #c96a52;
+    border-color: #c96a52;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(231, 111, 81, 0.3);
+}
+
+.dg-hero-btn-outline {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.dg-hero-btn-outline:hover {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dg-hero-content {
+        margin-left: 5%;
+        padding-top: 20vh;
+        max-width: 90%;
+    }
+
+    .dg-hero-title {
+        font-size: 52px;
+    }
+
+    .dg-hero-subtitle {
+        font-size: 20px;
+    }
+
+    .dg-hero-desc {
+        font-size: 15px;
+    }
+
+    .dg-hero-btn {
+        padding: 14px 24px;
+        font-size: 13px;
+    }
+}

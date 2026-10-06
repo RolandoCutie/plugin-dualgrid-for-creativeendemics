@@ -1,0 +1,402 @@
+<?php
+
+// === includes/ajax-tour-details.php ===
+// Endpoint AJAX: we_get_tour_details
+//
+// Agrega este archivo a tu cpt-tours.php o functions.php
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 1. LOCALIZAR SCRIPT
+//    Pasar ajaxUrl y nonce al JS del modal
+// ═══════════════════════════════════════════════════════════════════════════════
+
+add_action('wp_enqueue_scripts', function () {
+
+    if (!is_admin()) {
+
+        wp_localize_script(
+            'dualgrid-tour-modal-detail',
+            'geTourModal',
+            [
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'nonce'   => wp_create_nonce('we_tour_modal_nonce'),
+            ]
+        );
+    }
+});
+
+
+// Si aún no registras el script del modal, hazlo así:
+//
+// wp_enqueue_script(
+//     'tour-modal',
+//     plugin_dir_url(__FILE__) . '../js/tour-modal.js',
+//     [],
+//     '1.0',
+//     true
+// );
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 2. ENDPOINT AJAX
+//    Obtener detalles completos del tour
+// ═══════════════════════════════════════════════════════════════════════════════
+
+add_action(
+    'wp_ajax_we_get_tour_details',
+    'we_ajax_get_tour_details'
+);
+
+add_action(
+    'wp_ajax_nopriv_we_get_tour_details',
+    'we_ajax_get_tour_details'
+);
+
+
+function we_ajax_get_tour_details()
+{
+    // ═══════════════════════════════════════════════════════════════════════════
+    // VERIFICAR NONCE
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    if (
+        !wp_verify_nonce(
+            $_POST['nonce'] ?? '',
+            'we_tour_modal_nonce'
+        )
+    ) {
+        wp_send_json_error('Nonce inválido');
+    }
+
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // OBTENER ID DEL TOUR
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    $tour_id = intval($_POST['tour_id'] ?? 0);
+
+    if (!$tour_id) {
+        wp_send_json_error('ID de tour no válido');
+    }
+
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // VALIDAR TOUR
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    $post = get_post($tour_id);
+
+    if (
+        !$post ||
+        $post->post_type !== 'tour'
+    ) {
+        wp_send_json_error('Tour no encontrado');
+    }
+
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // HELPERS
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Obtener un campo meta del tour.
+     *
+     * @param string $key
+     * @param mixed  $default
+     * @return mixed
+     */
+    $tmeta = function ($key, $default = '') use ($tour_id) {
+        $val = get_post_meta(
+            $tour_id,
+            $key,
+            true
+        );
+
+        return (
+            $val !== '' &&
+            $val !== false &&
+            $val !== null
+        )
+            ? $val
+            : $default;
+    };
+
+
+    /**
+     * Obtener un campo meta que debe ser un array.
+     *
+     * @param string $key
+     * @return array
+     */
+    $tmeta_arr = function ($key) use ($tour_id) {
+        $val = get_post_meta(
+            $tour_id,
+            $key,
+            true
+        );
+
+        return is_array($val)
+            ? $val
+            : [];
+    };
+
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // CONSTRUIR RESPUESTA
+    //
+    // La estructura debe mantenerse exactamente como la espera
+    // tour-modal.js
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    $data = [
+
+        // ───────────────────────────────────────────────────────────────────────
+        // HEADER
+        // ───────────────────────────────────────────────────────────────────────
+
+        'name' => $post->post_title,
+
+        'permalink' => get_permalink($tour_id),
+
+        'coords' => $tmeta(
+            'tour_coords'
+        ),
+
+        'short_description' => $tmeta(
+            'tour_short_description'
+        ),
+
+
+        // ───────────────────────────────────────────────────────────────────────
+        // ATRIBUTOS DEL TOUR
+        // ───────────────────────────────────────────────────────────────────────
+
+        'city' => $tmeta(
+            'tour_city'
+        ),
+
+        'duration' => $tmeta(
+            'tour_duration'
+        ),
+
+        'max_people' => $tmeta(
+            'tour_max_people'
+        ),
+
+        'difficulty' => $tmeta(
+            'tour_difficulty'
+        ),
+
+        'price' => $tmeta(
+            'tour_price'
+        ),
+
+        'next_date' => $tmeta(
+            'tour_next_date'
+        ),
+
+        'tour_type' => $tmeta(
+            'tour_type'
+        ),
+
+        'pace' => $tmeta(
+            'tour_pace'
+        ),
+
+        'language' => $tmeta(
+            'tour_language'
+        ),
+
+        'transport' => $tmeta(
+            'tour_transport'
+        ),
+
+        'accommodation' => $tmeta(
+            'tour_accommodation'
+        ),
+
+        'dates' => $tmeta(
+            'tour_dates'
+        ),
+
+
+        // ───────────────────────────────────────────────────────────────────────
+        // GALERÍA
+        // ───────────────────────────────────────────────────────────────────────
+
+        'main_image' => get_the_post_thumbnail_url(
+            $tour_id,
+            'large'
+        ) ?: '',
+
+        'gallery' => $tmeta_arr(
+            'tour_gallery'
+        ),
+
+
+        // ───────────────────────────────────────────────────────────────────────
+        // ABOUT
+        // ───────────────────────────────────────────────────────────────────────
+
+        'about' => $tmeta_arr(
+            'tour_about'
+        ),
+
+
+        // ───────────────────────────────────────────────────────────────────────
+        // FAUNA / WILDLIFE
+        // ───────────────────────────────────────────────────────────────────────
+
+        'wildlife_label' => $tmeta(
+            'tour_wildlife_label',
+            'Wildlife you can spot'
+        ),
+
+        'wildlife' => $tmeta_arr(
+            'tour_wildlife'
+        ),
+
+
+        // ───────────────────────────────────────────────────────────────────────
+        // ORGANIZADOR
+        // ───────────────────────────────────────────────────────────────────────
+
+        'organizer' => [
+
+            'name' => $tmeta(
+                'tour_organizer_name'
+            ),
+
+            'role' => $tmeta(
+                'tour_organizer_role'
+            ),
+
+            'logo' => $tmeta(
+                'tour_organizer_logo'
+            ),
+        ],
+
+
+        // ───────────────────────────────────────────────────────────────────────
+        // GUÍAS
+        // ───────────────────────────────────────────────────────────────────────
+
+        'guides' => $tmeta_arr(
+            'tour_guides'
+        ),
+
+
+        // ───────────────────────────────────────────────────────────────────────
+        // ITINERARIO
+        // ───────────────────────────────────────────────────────────────────────
+
+        'itinerary' => $tmeta_arr(
+            'tour_itinerary'
+        ),
+
+
+        // ───────────────────────────────────────────────────────────────────────
+        // UBICACIONES
+        //
+        // Se utilizan tanto para la lista como para el mapa.
+        // ───────────────────────────────────────────────────────────────────────
+
+        'locations' => $tmeta_arr(
+            'tour_locations'
+        ),
+
+
+        // ───────────────────────────────────────────────────────────────────────
+        // DISPONIBILIDAD
+        // ───────────────────────────────────────────────────────────────────────
+
+        'availability' => $tmeta_arr(
+            'tour_availability'
+        ),
+
+
+        // ───────────────────────────────────────────────────────────────────────
+        // INCLUIDO / NO INCLUIDO
+        // ───────────────────────────────────────────────────────────────────────
+
+        'includes' => $tmeta_arr(
+            'tour_includes'
+        ),
+
+        'excludes' => $tmeta_arr(
+            'tour_excludes'
+        ),
+
+
+        // ───────────────────────────────────────────────────────────────────────
+        // POLÍTICAS Y FAQ
+        // ───────────────────────────────────────────────────────────────────────
+
+        'policies' => $tmeta(
+            'tour_policies'
+        ),
+
+        'faq' => $tmeta_arr(
+            'tour_faq'
+        ),
+
+
+        // ───────────────────────────────────────────────────────────────────────
+        // COORDENADAS PARA EL MAPA
+        // ───────────────────────────────────────────────────────────────────────
+
+        'coords_lat' => $tmeta(
+            'tour_coords_lat',
+            '9.58'
+        ),
+
+        'coords_lng' => $tmeta(
+            'tour_coords_lng',
+            '-83.81'
+        ),
+    ];
+
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ASEGURAR QUE LA GALERÍA TENGA LA IMAGEN PRINCIPAL
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    if (
+        empty($data['gallery']) &&
+        !empty($data['main_image'])
+    ) {
+        $data['gallery'] = [
+            $data['main_image']
+        ];
+    }
+
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ASEGURAR IMAGEN PARA ELEMENTOS DE WILDLIFE
+    //
+    // Si una especie no tiene imagen propia, utiliza la imagen principal
+    // del tour como fallback.
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    foreach ($data['wildlife'] as &$w) {
+
+        if (
+            empty($w['image']) &&
+            !empty($data['main_image'])
+        ) {
+            $w['image'] = $data['main_image'];
+        }
+    }
+
+    unset($w);
+
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // RESPUESTA JSON
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    wp_send_json_success(
+        $data
+    );
+}

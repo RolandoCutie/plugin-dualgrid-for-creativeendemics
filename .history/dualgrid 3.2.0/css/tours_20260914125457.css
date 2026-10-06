@@ -1,0 +1,375 @@
+/* === DUALGRID - TOURS CARDS ===
+   v2.0 — Fix legibilidad de textos sobre fondos brillantes */
+
+.tour-section {
+    font-family: 'Fraunces', 'Georgia', serif;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 60px 24px;
+}
+
+.tour-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.tour-label {
+    font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: #c17f5f;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.tour-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: #c17f5f;
+}
+
+.tour-title {
+    font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+    font-size: 52px;
+    line-height: 1.05;
+    color: #1a3a2f;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.tour-title em {
+    font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+    font-style: italic;
+    color: #4a7c6f;
+}
+
+.view-all {
+    font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    color: #1a3a2f;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: gap .3s ease;
+    font-weight: 500;
+}
+
+.view-all:hover {
+    gap: 14px;
+}
+
+.tour-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+@media (max-width: 768px) {
+    .tour-grid {
+        grid-template-columns: 1fr;
+    }
+    .tour-card--full {
+        grid-column: auto;
+        min-height: 520px;
+    }
+    .tour-card--tailor-made .tour-card-desc {
+        max-width: 100%;
+    }
+    .tour-title {
+        font-size: 36px;
+    }
+    .tour-section {
+        padding: 40px 16px;
+    }
+}
+
+.tour-card {
+    position: relative;
+    height: 520px;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+}
+
+.tour-card--button {
+    width: 100%;
+    border: none;
+    padding: 0;
+    background: none;
+    text-align: left;
+    font: inherit;
+}
+
+.tour-card--full {
+    grid-column: 1 / -1;
+    min-height: 420px;
+    transform: translateY(60px);
+}
+
+.tour-card--full.dg-in-view {
+    transform: translateY(0);
+}
+
+.tour-card--tailor-made .tour-card-content {
+    max-width: 760px;
+}
+
+.tour-card--tailor-made .tour-card-desc {
+    max-width: 70%;
+}
+
+.tour-card-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 1.2s ease, filter 1s ease;
+    filter: saturate(0.75) brightness(0.92);
+}
+
+.tour-card:hover .tour-card-bg {
+    transform: scale(1.11);
+    filter: saturate(1.18) brightness(1.12);
+}
+
+/* FIX: degradado permanente fuerte abajo (donde está el texto),
+   imagen limpia arriba — reemplaza al antiguo overlay plano */
+.tour-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(10, 24, 20, 0.88) 0%,
+        rgba(10, 24, 20, 0.60) 28%,
+        rgba(10, 24, 20, 0.22) 55%,
+        rgba(10, 24, 20, 0) 78%
+    );
+    transition: background .6s ease;
+}
+
+/* Al hover se intensifica solo la zona media */
+.tour-card:hover .tour-card-overlay {
+    background: linear-gradient(
+        to top,
+        rgba(10, 24, 20, 0.86) 0%,
+        rgba(10, 24, 20, 0.46) 24%,
+        rgba(10, 24, 20, 0.14) 52%,
+        rgba(10, 24, 20, 0.02) 84%
+    );
+}
+
+.tour-card-meta-top {
+    position: absolute;
+    top: 20px;
+    left: 28px;
+    right: 28px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.9);
+    z-index: 2;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.tour-card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 40px 36px 36px 36px;
+    z-index: 2;
+    color: #fff;
+}
+
+.tour-card-title {
+    font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+    font-size: 42px;
+    font-weight: 400;
+    margin: 0 0 14px 0;
+    line-height: 1.1;
+    letter-spacing: -0.3px;
+    /* FIX: sombra para legibilidad */
+    text-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.55),
+        0 1px 3px rgba(0, 0, 0, 0.70);
+}
+
+.tour-card-desc {
+    font-family: 'Fraunces', 'Georgia', serif;
+    font-size: 15px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0 0 20px 0;
+    max-width: 85%;
+    /* FIX: sombra para legibilidad */
+    text-shadow:
+        0 1px 8px rgba(0, 0, 0, 0.60),
+        0 1px 2px rgba(0, 0, 0, 0.70);
+}
+
+.tour-card-info {
+    display: flex;
+    gap: 28px;
+    font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 22px;
+}
+
+.tour-card-info span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* FIX: sombra para legibilidad */
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+}
+
+.tour-card-link {
+    font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+    color: #c17f5f;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all .3s ease;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    /* FIX: el terracota también se pierde sobre fondos claros —
+       sombra reforzada */
+    text-shadow:
+        0 1px 8px rgba(0, 0, 0, 0.70),
+        0 1px 2px rgba(0, 0, 0, 0.85);
+}
+
+.tour-card:hover .tour-card-link {
+    gap: 14px;
+    color: #d4956f;
+}
+
+/* ============================================
+   ANIMACIONES POR SCROLL — TOURS CARDS
+   ============================================ */
+
+/* ----- Encabezado: etiqueta, título, botón "Ver todos" ----- */
+.tour-header .tour-label,
+.tour-header .tour-title,
+.tour-header .view-all {
+    opacity: 0;
+    transform: translateY(40px);
+    filter: blur(8px);
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tour-header.dg-in-view .tour-label {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition-delay: 0.10s;
+}
+
+.tour-header.dg-in-view .tour-title {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition-delay: 0.25s;
+}
+
+.tour-header.dg-in-view .view-all {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition-delay: 0.40s;
+}
+
+/* ----- Cards: estado inicial ----- */
+.tour-card {
+    opacity: 0;
+    filter: blur(6px);
+    transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Columna izquierda (1ª, 3ª…) entra desde la izquierda */
+.tour-card:nth-child(odd) {
+    transform: translateX(-80px);
+}
+
+/* Columna derecha (2ª, 4ª…) entra desde la derecha */
+.tour-card:nth-child(even) {
+    transform: translateX(80px);
+}
+
+/* Estado activo */
+.tour-card.dg-in-view {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+}
+
+/* Stagger escalonado */
+.tour-card:nth-child(1).dg-in-view { transition-delay: 0.15s; }
+.tour-card:nth-child(2).dg-in-view { transition-delay: 0.30s; }
+.tour-card:nth-child(3).dg-in-view { transition-delay: 0.45s; }
+.tour-card:nth-child(4).dg-in-view { transition-delay: 0.60s; }
+.tour-card:nth-child(5).dg-in-view { transition-delay: 0.75s; }
+.tour-card:nth-child(6).dg-in-view { transition-delay: 0.90s; }
+.tour-card:nth-child(7).dg-in-view { transition-delay: 1.05s; }
+
+
+
+/* ═══════════════════════════════════════════
+   ANIMACIONES SCROLL — SHORTCODE [we_tours]
+   (Fail-safe: si no hay JS, las tarjetas se ven normales)
+   ═══════════════════════════════════════════ */
+
+/* Solo ocultar si el JS ya marcó la tarjeta para animar */
+.we-program-card.we-slide-left:not(.dg-in-view),
+.we-program-card.we-slide-right:not(.dg-in-view) {
+    opacity: 0;
+}
+
+.we-program-card.we-slide-left:not(.dg-in-view) {
+    transform: translateX(-80px);
+}
+
+.we-program-card.we-slide-right:not(.dg-in-view) {
+    transform: translateX(80px);
+}
+
+/* Al entrar al viewport — MISMA clase .dg-in-view que el resto del sitio */
+.we-program-card.dg-in-view {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Stagger: cada tarjeta entra 150ms después de la anterior */
+.we-programs-list .we-program-card.dg-in-view:nth-child(1) { transition-delay: 0.00s; }
+.we-programs-list .we-program-card.dg-in-view:nth-child(2) { transition-delay: 0.15s; }
+.we-programs-list .we-program-card.dg-in-view:nth-child(3) { transition-delay: 0.30s; }
+.we-programs-list .we-program-card.dg-in-view:nth-child(4) { transition-delay: 0.45s; }
+.we-programs-list .we-program-card.dg-in-view:nth-child(5) { transition-delay: 0.60s; }
+.we-programs-list .we-program-card.dg-in-view:nth-child(6) { transition-delay: 0.75s; }
+
+/* Móvil: sin desplazamiento lateral */
+@media (max-width: 768px) {
+    .we-program-card.we-slide-left:not(.dg-in-view),
+    .we-program-card.we-slide-right:not(.dg-in-view) {
+        transform: translateY(30px);
+    }
+}

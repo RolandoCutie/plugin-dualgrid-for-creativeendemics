@@ -1,0 +1,400 @@
+/* ============================================
+   DUALGRID - FAQ Accordion Component
+   ============================================ */
+
+/* ---------- Section ---------- */
+section.dg-faqs-section,
+body section.dg-faqs-section {
+    background-color: #FBF6ED !important;
+    padding: 80px 20px;
+    font-family: 'Fraunces', 'Georgia', serif;
+}
+
+.dg-faqs-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ════════ Encabezado ════════ */
+.dg-faqs-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.dg-faqs-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #5a8c7a;
+    margin-bottom: 20px;
+}
+
+.dg-faqs-label::before,
+.dg-faqs-label::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background-color: #5a8c7a;
+}
+
+/* TÍTULOS EN TERRACOTA #E76F51 */
+.dg-faqs-title,
+body .dg-faqs-title,
+html body .dg-faqs-title.dg-faqs-title {
+    font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    color: #E76F51 !important;
+    line-height: 1.2;
+    margin: 0 0 16px 0;
+}
+
+.dg-faqs-title em,
+body .dg-faqs-title em {
+    font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+    font-style: italic;
+    color: #E76F51 !important;
+}
+
+.dg-faqs-subtitle {
+    font-family: 'Fraunces', 'Georgia', serif;
+    font-size: 16px;
+    color: #6b6b6b;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.dg-faqs-subtitle a {
+    color: #E76F51 !important;
+    text-decoration: none;
+    font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+}
+
+.dg-faqs-subtitle a:hover {
+    opacity: 0.7;
+}
+
+/* ════════ Lista de Preguntas Frecuentes ════════ */
+.dg-faqs-list {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* ════════ Ítem de Pregunta Frecuente ════════ */
+.dg-faq-item {
+    border-bottom: 1px solid #f0ede8;
+}
+
+.dg-faq-item:last-child {
+    border-bottom: none;
+}
+
+/* ---------- Trigger Button ---------- */
+.dg-faq-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.dg-faq-number {
+    font-family: 'Satoshi', 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #E76F51 !important;
+    min-width: 28px;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+.dg-faq-question {
+    flex: 1;
+    font-family: 'Jost', 'Fraunces', 'Georgia', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #1a3a2f;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+}
+
+/* BOTÓN/ICONO EN TERRACOTA #E76F51 */
+.dg-faq-icon,
+body .dg-faq-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #E76F51 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.dg-icon-plus,
+.dg-icon-minus {
+    position: absolute;
+    display: block;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dg-icon-plus::before,
+.dg-icon-plus::after,
+.dg-icon-minus::before {
+    content: '';
+    display: block;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+}
+
+/* Plus icon */
+.dg-icon-plus::before {
+    width: 12px;
+    height: 2px;
+}
+
+.dg-icon-plus::after {
+    width: 2px;
+    height: 12px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Minus icon */
+.dg-icon-minus::before {
+    width: 12px;
+    height: 2px;
+}
+
+.dg-icon-minus {
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+
+/* ════════ Estado Activo / Abierto ════════ */
+.dg-faq-item.is-open .dg-faq-number,
+.dg-faq-item.is-open .dg-faq-question {
+    color: #E76F51 !important;
+}
+
+.dg-faq-item.is-open .dg-faq-icon,
+body .dg-faq-item.is-open .dg-faq-icon {
+    background-color: #E76F51 !important;
+}
+
+.dg-faq-item.is-open .dg-icon-plus::before,
+.dg-faq-item.is-open .dg-icon-plus::after,
+.dg-faq-item.is-open .dg-icon-minus::before {
+    background-color: #ffffff;
+}
+
+.dg-faq-item.is-open .dg-icon-plus {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+.dg-faq-item.is-open .dg-icon-minus {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+/* ---------- Content Panel ---------- */
+.dg-faq-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease;
+}
+
+.dg-faq-item.is-open .dg-faq-content {
+    max-height: 500px;
+}
+
+.dg-faq-inner {
+    padding: 0 32px 32px 84px;
+    font-family: 'Fraunces', 'Georgia', serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #5a5a5a;
+}
+
+.dg-faq-inner p {
+    margin: 0 0 12px 0;
+}
+
+.dg-faq-inner p:last-child {
+    margin-bottom: 0;
+}
+
+/* ---------- Hover States ---------- */
+.dg-faq-trigger:hover .dg-faq-icon {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ════════ Responsivo ════════ */
+@media (max-width: 768px) {
+    .dg-faqs-section {
+        padding: 50px 16px;
+    }
+
+    .dg-faq-trigger {
+        padding: 20px 20px;
+        gap: 16px;
+    }
+
+    .dg-faq-question {
+        font-size: 17px;
+    }
+
+    .dg-faq-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .dg-faq-inner {
+        padding: 0 20px 24px 60px;
+        font-size: 15px;
+    }
+
+    .dg-faqs-title {
+        font-size: clamp(1.6rem, 6vw, 2.5rem);
+    }
+}
+
+
+/* ============================================
+   ANIMACIONES DE APERTURA DEL ACORDEÓN
+   ============================================ */
+
+/* Contenido: entrada desde abajo con blur */
+.dg-faq-inner {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(6px);
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dg-faq-item.is-open .dg-faq-inner {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition-delay: 0.15s;
+}
+
+/* Icono: rotación fluida del + al - */
+.dg-icon-plus,
+.dg-icon-minus {
+    transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dg-faq-item.is-open .dg-icon-plus {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+.dg-faq-item.is-open .dg-icon-minus {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+/* Número: pequeño pop al abrir */
+.dg-faq-number {
+    display: inline-block;
+    transition: color 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dg-faq-item.is-open .dg-faq-number {
+    transform: scale(1.2);
+}
+
+/* Pregunta: sutil desplazamiento a la derecha */
+.dg-faq-question {
+    display: inline-block;
+    transition: color 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.05s;
+}
+
+.dg-faq-item.is-open .dg-faq-question {
+    transform: translateX(6px);
+}
+
+/* ============================================
+   ANIMACIONES POR SCROLL — FAQ
+   ============================================ */
+
+.dg-faqs-header .dg-faqs-label,
+.dg-faqs-header .dg-faqs-title,
+.dg-faqs-header .dg-faqs-subtitle {
+    opacity: 0;
+    transform: translateY(40px);
+    filter: blur(8px);
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dg-faqs-header.dg-in-view .dg-faqs-label {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition-delay: 0.10s;
+}
+
+.dg-faqs-header.dg-in-view .dg-faqs-title {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition-delay: 0.25s;
+}
+
+.dg-faqs-header.dg-in-view .dg-faqs-subtitle {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition-delay: 0.40s;
+}
+
+/* Ítems de Preguntas Frecuentes */
+.dg-faq-item {
+    opacity: 0;
+    transform: translateY(50px);
+    filter: blur(6px);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dg-faq-item.dg-in-view {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+.dg-faq-item:nth-child(1).dg-in-view  { transition-delay: 0.50s; }
+.dg-faq-item:nth-child(2).dg-in-view  { transition-delay: 0.60s; }
+.dg-faq-item:nth-child(3).dg-in-view  { transition-delay: 0.70s; }
+.dg-faq-item:nth-child(4).dg-in-view  { transition-delay: 0.80s; }
+.dg-faq-item:nth-child(5).dg-in-view  { transition-delay: 0.90s; }
+.dg-faq-item:nth-child(6).dg-in-view  { transition-delay: 1.00s; }
+.dg-faq-item:nth-child(7).dg-in-view  { transition-delay: 1.10s; }
+.dg-faq-item:nth-child(8).dg-in-view  { transition-delay: 1.20s; }
+.dg-faq-item:nth-child(9).dg-in-view  { transition-delay: 1.30s; }
+.dg-faq-item:nth-child(10).dg-in-view { transition-delay: 1.40s; }

@@ -1,0 +1,223 @@
+/* ============================================
+   WILDENDEMICS — Overview / At a Glance
+   ============================================ */
+
+.we-overview-section {
+    background-color: #FBF6ED;
+    padding: 80px 0;
+    overflow: hidden;
+}
+
+.we-overview-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+    align-items: start;
+}
+
+/* ── Animaciones base ── */
+.we-anim {
+    opacity: 0;
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+.we-anim.is-visible {
+    opacity: 1;
+    transform: translateY(0) translateX(0) scale(1);
+}
+
+.we-anim-fade-up {
+    transform: translateY(40px);
+}
+
+.we-anim-fade-right {
+    transform: translateX(50px);
+}
+
+.we-anim-scale {
+    transform: scale(0.85);
+}
+
+.we-anim-line {
+    opacity: 0;
+    width: 0;
+    transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.4s ease;
+}
+
+.we-anim-line.is-visible {
+    opacity: 1;
+    width: 32px;
+}
+
+.we-anim-d1 { transition-delay: 0.1s; }
+.we-anim-d2 { transition-delay: 0.25s; }
+.we-anim-d3 { transition-delay: 0.4s; }
+.we-anim-d4 { transition-delay: 0.55s; }
+.we-anim-d5 { transition-delay: 0.7s; }
+
+/* ── Columna izquierda ── */
+.we-overview-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.we-overview-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: #e07a5f;
+    font-weight: 600;
+}
+
+.we-overview-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background-color: #e07a5f;
+}
+
+.we-overview-title {
+    font-size: 2.4rem;
+    color: #1a3a2f;
+    font-weight: 400;
+    line-height: 1.15;
+    margin: 0;
+}
+
+.we-overview-title em {
+    font-style: italic;
+    color: #2d6a4f;
+}
+
+.we-overview-text {
+    color: #6b6b6b;
+    font-size: 1rem;
+    line-height: 1.75;
+    margin: 8px 0 0 0;
+    max-width: 90%;
+}
+
+/* ── Columna derecha: De un vistazo ── */
+.we-overview-sidebar {
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    padding: 32px 36px;
+    box-shadow: 0 4px 24px rgba(26, 58, 47, 0.05);
+}
+
+.we-sidebar-label {
+    display: block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: #9ca3af;
+    font-weight: 600;
+    margin-bottom: 28px;
+}
+
+.we-glance-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.we-glance-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: transform 0.3s ease;
+}
+
+.we-glance-item:hover {
+    transform: translateX(6px);
+}
+
+.we-glance-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.we-glance-item:hover .we-glance-icon {
+    transform: scale(1.15) rotate(-5deg);
+}
+
+.we-glance-icon svg {
+    width: 22px;
+    height: 22px;
+    color: #1a3a2f;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: color 0.3s ease;
+}
+
+.we-glance-item:hover .we-glance-icon svg {
+    color: #2d6a4f;
+}
+
+.we-glance-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.we-glance-key {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    font-weight: 400;
+    transition: color 0.3s ease;
+}
+
+.we-glance-item:hover .we-glance-key {
+    color: #6b6b6b;
+}
+
+.we-glance-value {
+    font-size: 1rem;
+    color: #1a3a2f;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.we-glance-item:hover .we-glance-value {
+    color: #2d6a4f;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .we-overview-container {
+        grid-template-columns: 1fr;
+        gap: 48px;
+    }
+
+    .we-overview-title {
+        font-size: 1.9rem;
+    }
+
+    .we-overview-sidebar {
+        padding: 28px;
+    }
+
+    .we-anim-fade-right {
+        transform: translateY(40px);
+    }
+}

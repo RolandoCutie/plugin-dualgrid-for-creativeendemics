@@ -1,0 +1,356 @@
+/* ============================================
+   DUALGRID — Galería Moderna + Animaciones
+   ============================================ */
+
+:root {
+    --dg-green: #1B4322;
+    --dg-green-dark: #122e18;
+    --dg-gap: 18px;
+    --dg-radius: 12px;
+    --dg-transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ----- Wrapper ----- */
+.dg-gallery-wrapper {
+    max-width: 1500px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ----- Filtros estilo pills modernos ----- */
+.dg-gallery-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+    justify-content: flex-start;
+}
+
+.dg-filter-btn {
+    background: transparent;
+    border: 1.5px solid #e0e0e0;
+    color: #666;
+    padding: 10px 28px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.dg-filter-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--dg-green);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    border-radius: 50px;
+    z-index: -1;
+}
+
+.dg-filter-btn:hover {
+    border-color: var(--dg-green);
+    color: var(--dg-green);
+}
+
+.dg-filter-btn.active {
+    border-color: var(--dg-green);
+    color: #fff;
+}
+
+.dg-filter-btn.active::before {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* ----- Grid Masonry estilo Pinterest ----- */
+.dg-gallery-grid {
+    column-count: 4;
+    column-gap: var(--dg-gap);
+}
+
+/* ----- Item: estado inicial oculto para animación ----- */
+.dg-gallery-item {
+    display: inline-block;
+    width: 100%;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    margin: 0 0 var(--dg-gap);
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--dg-radius);
+    cursor: pointer;
+    background: #e8e8e8;
+    opacity: 0;
+    transform: scale(0.88) translateY(40px);
+    filter: brightness(1.15) saturate(0.8);
+    transition: transform var(--dg-transition), box-shadow var(--dg-transition);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+/* Estado visible al entrar por scroll (misma clase que el resto del sitio) */
+.dg-gallery-item.dg-in-view {
+    animation: dgReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Stagger delays por posición en el DOM (ahora es por filas) */
+.dg-gallery-item.dg-in-view:nth-child(1)  { animation-delay: 0.00s; }
+.dg-gallery-item.dg-in-view:nth-child(2)  { animation-delay: 0.06s; }
+.dg-gallery-item.dg-in-view:nth-child(3)  { animation-delay: 0.12s; }
+.dg-gallery-item.dg-in-view:nth-child(4)  { animation-delay: 0.18s; }
+.dg-gallery-item.dg-in-view:nth-child(5)  { animation-delay: 0.24s; }
+.dg-gallery-item.dg-in-view:nth-child(6)  { animation-delay: 0.30s; }
+.dg-gallery-item.dg-in-view:nth-child(7)  { animation-delay: 0.36s; }
+.dg-gallery-item.dg-in-view:nth-child(8)  { animation-delay: 0.42s; }
+.dg-gallery-item.dg-in-view:nth-child(9)  { animation-delay: 0.48s; }
+.dg-gallery-item.dg-in-view:nth-child(10) { animation-delay: 0.54s; }
+.dg-gallery-item.dg-in-view:nth-child(11) { animation-delay: 0.60s; }
+.dg-gallery-item.dg-in-view:nth-child(12) { animation-delay: 0.66s; }
+
+@keyframes dgReveal {
+    from {
+        opacity: 0;
+        transform: scale(0.88) translateY(40px);
+        filter: brightness(1.15) saturate(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: brightness(1) saturate(1);
+    }
+}
+
+/* Ocultar items filtrados */
+.dg-gallery-item.hidden {
+    display: none;
+}
+
+/* Imagen */
+.dg-gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
+}
+
+.dg-gallery-item:hover {
+    box-shadow: 0 20px 50px rgba(27, 67, 34, 0.18);
+}
+
+.dg-gallery-item:hover img {
+    transform: scale(1.08);
+    filter: brightness(0.85);
+}
+
+/* ----- Overlay moderno ----- */
+.dg-item-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(27, 67, 34, 0) 0%,
+        rgba(27, 67, 34, 0.4) 50%,
+        rgba(27, 67, 34, 0.92) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    display: flex;
+    align-items: flex-end;
+    padding: 28px;
+}
+
+.dg-gallery-item:hover .dg-item-overlay {
+    opacity: 1;
+}
+
+/* Línea decorativa animada */
+.dg-item-overlay::before {
+    content: '';
+    position: absolute;
+    bottom: 80px;
+    left: 28px;
+    width: 0;
+    height: 2px;
+    background: rgba(255,255,255,0.6);
+    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dg-gallery-item:hover .dg-item-overlay::before {
+    width: 40px;
+}
+
+/* Info del item */
+.dg-item-info {
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+
+.dg-gallery-item:hover .dg-item-info {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.dg-item-info h3 {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 6px;
+    line-height: 1.2;
+    letter-spacing: 0.3px;
+}
+
+.dg-item-info span {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: monospace;
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 1200px) {
+    .dg-gallery-grid { column-count: 3; }
+}
+
+@media (max-width: 768px) {
+    .dg-gallery-grid { column-count: 2; }
+    .dg-gallery-grid { --dg-gap: 12px; }
+    .dg-gallery-filters { gap: 8px; margin-bottom: 28px; }
+    .dg-filter-btn { padding: 8px 20px; font-size: 12px; }
+    .dg-item-info h3 { font-size: 16px; }
+}
+
+@media (max-width: 480px) {
+    .dg-gallery-grid { column-count: 1; }
+}
+
+/* ============================================
+   LIGHTBOX MEJORADO
+   ============================================ */
+.dg-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(27, 67, 34, 0.96);
+    backdrop-filter: blur(8px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.dg-lightbox.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dg-lightbox-content {
+    text-align: center;
+    max-width: 85vw;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dg-lightbox-img {
+    max-width: 100%;
+    max-height: 72vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+    transform: scale(0.92) translateY(20px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dg-lightbox.active .dg-lightbox-img {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.dg-lightbox-caption {
+    margin-top: 24px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+}
+
+.dg-lightbox.active .dg-lightbox-caption {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dg-lightbox-title {
+    font-size: 26px;
+    font-weight: 400;
+    margin: 0 0 6px;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.dg-lightbox-subtitle {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-family: monospace;
+    margin: 0;
+}
+
+/* ----- Controles del lightbox ----- */
+.dg-lightbox-close,
+.dg-lightbox-prev,
+.dg-lightbox-next {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    line-height: 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dg-lightbox-close:hover,
+.dg-lightbox-prev:hover,
+.dg-lightbox-next:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.dg-lightbox-close {
+    top: 24px;
+    right: 30px;
+    width: 48px;
+    height: 48px;
+    font-size: 28px;
+    border-radius: 50%;
+}
+
+.dg-lightbox-prev,
+.dg-lightbox-next {
+    top: 50%;
+    width: 56px;
+    height: 56px;
+    font-size: 32px;
+    transform: translateY(-50%);
+}
+
+.dg-lightbox-prev { left: 24px; }
+.dg-lightbox-next { right: 24px; }

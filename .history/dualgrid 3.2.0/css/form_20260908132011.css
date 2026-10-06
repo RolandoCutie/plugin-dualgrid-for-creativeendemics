@@ -1,0 +1,129 @@
+/* ============================================================
+   CF7 — Integración con diseño Wildendemics
+   ============================================================ */
+
+/* Hacer que CF7 respete tu grid */
+.we-cf7-form form {
+    display: contents;
+}
+
+/* Ocultar etiquetas por defecto de CF7 si usas las tuyas */
+.we-cf7-form .wpcf7-form-control-wrap {
+    display: block;
+    width: 100%;
+}
+
+/* Inputs heredan tu estilo */
+.we-cf7-form input[type="text"],
+.we-cf7-form input[type="email"],
+.we-cf7-form input[type="tel"],
+.we-cf7-form input[type="date"],
+.we-cf7-form input[type="number"],
+.we-cf7-form select,
+.we-cf7-form textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #dce8f0;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 48px;
+    background: #fff;
+    color: #1f2937;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.we-cf7-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 44px;
+    background-image: linear-gradient(45deg, transparent 50%, #1a3a2f 50%), linear-gradient(135deg, #1a3a2f 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(50% - 3px), calc(100% - 14px) calc(50% - 3px);
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+}
+
+.we-cf7-form input:focus,
+.we-cf7-form select:focus,
+.we-cf7-form textarea:focus {
+    outline: none;
+    border-color: #1a3a2f;
+    box-shadow: 0 0 0 3px rgba(26,58,47,0.08);
+}
+
+.we-cf7-form select option {
+    color: #1f2937;
+}
+
+/* Botón submit con tu clase */
+.we-cf7-form input[type="submit"],
+.we-cf7-form button[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: #e07a5f;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.we-cf7-form input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(224,122,95,0.3);
+}
+
+/* Spinner de CF7 */
+.wpcf7-spinner {
+    margin-left: 12px;
+    border: 3px solid rgba(224,122,95,0.2);
+    border-top-color: #e07a5f;
+}
+
+/* Mensajes de respuesta */
+.wpcf7-response-output {
+    border: none !important;
+    margin: 16px 0 0 0 !important;
+    padding: 16px 20px !important;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Éxito */
+.wpcf7-form.sent .wpcf7-response-output {
+    background: #2d6a4f;
+    color: #fff;
+}
+
+/* Error / Validación */
+.wpcf7-form.invalid .wpcf7-response-output,
+.wpcf7-form.unaccepted .wpcf7-response-output,
+.wpcf7-form.failed .wpcf7-response-output {
+    background: #c62828;
+    color: #fff;
+}
+
+/* Campos con error */
+.wpcf7-not-valid {
+    border-color: #c62828 !important;
+}
+
+.wpcf7-not-valid-tip {
+    color: #c62828;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* reCAPTCHA badge (opcional: ocultar si molesta, Google permite si hay aviso) */
+.grecaptcha-badge {
+    visibility: hidden;
+    opacity: 0;
+}

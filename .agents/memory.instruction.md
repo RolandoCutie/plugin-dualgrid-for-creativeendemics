@@ -11,8 +11,10 @@ applyTo: '**'
 - Plugin uses custom post types, shortcodes, Ajax detail rendering, and CF7 form injection.
 - Modal and form styling live mainly in CSS files under the theme/plugin CSS directory.
 - Tour-specific defaults and reusable content are seeded in admin generation helpers.
+- Repository root is a wrapper folder; the actual WordPress plugin lives under the nested `dualgrid/` directory.
 
 # Solutions Repository
 - Masonry gallery layout should use stable column masonry instead of fragile row-span calculations.
 - Reused default included/excluded content should be pulled from docs and populated for new tours automatically.
 - Modal forms should keep CF7 IDs and hidden fields while matching the provided branded layout.
+- SFTP config for this repo should set `"context": "dualgrid"` so uploads map to the real plugin root instead of adding an extra `dualgrid/` segment.

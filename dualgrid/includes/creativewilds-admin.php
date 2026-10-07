@@ -6,8 +6,8 @@ if (!defined('ABSPATH')) {
 
 add_action('admin_menu', function () {
     add_menu_page(
-        'CreativeWilds',
-        'CreativeWilds',
+        'DualGrid',
+        'DualGrid',
         'edit_others_posts',
         'dualgrid-creativewilds',
         'dg_cw_render_admin_dashboard',
@@ -17,7 +17,7 @@ add_action('admin_menu', function () {
 
     add_submenu_page(
         'dualgrid-creativewilds',
-        'CreativeWilds',
+        'DualGrid',
         'Dashboard',
         'edit_others_posts',
         'dualgrid-creativewilds',
@@ -26,7 +26,7 @@ add_action('admin_menu', function () {
 
     add_submenu_page(
         'dualgrid-creativewilds',
-        'Contenido CreativeWilds',
+        'Contenido DualGrid',
         'Contenido',
         'edit_others_posts',
         'dualgrid-creativewilds-content',
@@ -183,7 +183,7 @@ if (!function_exists('dg_cw_render_admin_dashboard')) {
         <div class="wrap dg-cw-admin-page">
             <div class="dg-cw-admin-hero">
                 <div>
-                    <h1>CreativeWilds</h1>
+                    <h1>DualGrid</h1>
                     <p><?php esc_html_e('El plugin ahora queda enfocado en la nueva landing: hero, servicios, about, galeria y contacto.', 'dualgrid'); ?></p>
                 </div>
                 <a class="button button-primary" href="<?php echo esc_url(admin_url('admin.php?page=dualgrid-creativewilds-content')); ?>">

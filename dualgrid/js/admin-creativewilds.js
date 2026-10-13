@@ -1,4 +1,33 @@
 (function () {
+    var runtime = window.dgCreativeWildsAdmin || {};
+
+    function getTabRoot(wrapper) {
+        return wrapper.closest('[data-dg-cw-tab-root]') || wrapper.parentNode || document;
+    }
+
+    function setActiveTab(wrapper, tab, syncUrl) {
+        var trigger = wrapper.querySelector('[data-dg-cw-tab-trigger="' + tab + '"]');
+        if (!trigger) {
+            return;
+        }
+        
+        var tabRoot = getTabRoot(wrapper);
+
+        wrapper.querySelectorAll('[data-dg-cw-tab-trigger]').forEach(function (button) {
+            button.classList.toggle('is-active', button === trigger);
+        });
+
+        tabRoot.querySelectorAll('[data-dg-cw-tab-panel]').forEach(function (panel) {
+            panel.classList.toggle('is-active', panel.getAttribute('data-dg-cw-tab-panel') === tab);
+        });
+
+        if (syncUrl && window.history && window.history.replaceState) {
+            var url = new URL(window.location.href);
+            url.searchParams.set('tab', tab);
+            window.history.replaceState({}, '', url.toString());
+        }
+    }
+
     function updateRowTitle(row) {
         var source = row.querySelector('[data-dg-cw-title-source]');
         var target = row.querySelector('[data-dg-cw-row-title]');
@@ -15,6 +44,11 @@
             return;
         }
 
+        var requestedTab = new URLSearchParams(window.location.search).get('tab');
+        if (requestedTab) {
+            setActiveTab(wrapper, requestedTab, false);
+        }
+
         wrapper.addEventListener('click', function (event) {
             var trigger = event.target.closest('[data-dg-cw-tab-trigger]');
             if (!trigger) {
@@ -22,20 +56,30 @@
             }
 
             var tab = trigger.getAttribute('data-dg-cw-tab-trigger');
-            wrapper.querySelectorAll('[data-dg-cw-tab-trigger]').forEach(function (button) {
-                button.classList.toggle('is-active', button === trigger);
-            });
-            document.querySelectorAll('[data-dg-cw-tab-panel]').forEach(function (panel) {
-                panel.classList.toggle('is-active', panel.getAttribute('data-dg-cw-tab-panel') === tab);
-            });
+            setActiveTab(wrapper, tab, true);
         });
     }
 
     function bindImageField(container) {
+        if (container.getAttribute('data-dg-cw-image-bound') === 'true') {
+            return;
+        }
+
         var input = container.querySelector('[data-dg-cw-image-input]');
         var preview = container.querySelector('[data-dg-cw-image-preview]');
         var openButton = container.querySelector('[data-dg-cw-media-open]');
         var clearButton = container.querySelector('[data-dg-cw-media-clear]');
+        var frame = null;
+
+        if (!input || !preview) {
+            return;
+        }
+
+        container.setAttribute('data-dg-cw-image-bound', 'true');
+
+        function getPlaceholder() {
+            return preview.getAttribute('data-placeholder') || 'No image selected';
+        }
 
         function setPreview(id, url) {
             input.value = id || '';
@@ -44,7 +88,7 @@
                 preview.innerHTML = '<img src="' + url + '" alt="">';
             } else {
                 preview.classList.add('is-empty');
-                preview.innerHTML = '<span>No image selected</span>';
+                preview.innerHTML = '<span>' + getPlaceholder() + '</span>';
             }
         }
 
@@ -54,16 +98,19 @@
                     return;
                 }
 
-                var frame = wp.media({
-                    title: 'Seleccionar imagen',
-                    button: { text: 'Usar esta imagen' },
-                    multiple: false
-                });
+                if (!frame) {
+                    frame = wp.media({
+                        title: 'Seleccionar imagen',
+                        button: { text: 'Usar esta imagen' },
+                        multiple: false
+                    });
 
-                frame.on('select', function () {
-                    var attachment = frame.state().get('selection').first().toJSON();
-                    setPreview(attachment.id, attachment.sizes && attachment.sizes.medium ? attachment.sizes.medium.url : attachment.url);
-                });
+                    frame.on('select', function () {
+                        var attachment = frame.state().get('selection').first().toJSON();
+                        setPreview(attachment.id, attachment.sizes && attachment.sizes.medium ? attachment.sizes.medium.url : attachment.url);
+                        frame.close();
+                    });
+                }
 
                 frame.open();
             });
@@ -77,6 +124,11 @@
     }
 
     function bindRow(row) {
+        if (row.getAttribute('data-dg-cw-row-bound') === 'true') {
+            return;
+        }
+
+        row.setAttribute('data-dg-cw-row-bound', 'true');
         row.querySelectorAll('[data-dg-cw-image-field]').forEach(bindImageField);
         row.querySelectorAll('[data-dg-cw-title-source]').forEach(function (input) {
             input.addEventListener('input', function () {
@@ -139,7 +191,19 @@
         document.querySelectorAll('[data-dg-cw-image-field]').forEach(bindImageField);
     }
 
+    function syncTopLevelLink() {
+        if (!runtime.dashboardUrl) {
+            return;
+        }
+
+        var parentMenuLink = document.querySelector('#toplevel_page_dualgrid-creativewilds > a');
+        if (parentMenuLink) {
+            parentMenuLink.setAttribute('href', runtime.dashboardUrl);
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
+        syncTopLevelLink();
         setupTabs();
         setupRepeaters();
     });

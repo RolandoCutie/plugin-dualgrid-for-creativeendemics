@@ -150,3 +150,4 @@ if (!function_exists('dg_cw_handle_contact_submission')) {
         ]);
     }
 }
+

@@ -32,6 +32,7 @@ if (!function_exists('dg_cw_get_default_settings')) {
                     [
                         'slug' => 'real-estate-property-marketing',
                         'image_id' => 0,
+                        'hero_image_id' => 0,
                         'title_en' => 'Real Estate & Property Marketing',
                         'title_es' => 'Bienes R' . "\xC3\xAD" . 'ces y Marketing de Propiedades',
                         'hero_lead_en' => 'Cinematic content that makes your properties',
@@ -44,6 +45,7 @@ if (!function_exists('dg_cw_get_default_settings')) {
                     [
                         'slug' => 'marine-luxury-experiences',
                         'image_id' => 0,
+                        'hero_image_id' => 0,
                         'title_en' => 'Marine & Luxury Experiences',
                         'title_es' => 'Marina y Experiencias de Lujo',
                         'hero_lead_en' => 'Visuals that capture',
@@ -56,6 +58,7 @@ if (!function_exists('dg_cw_get_default_settings')) {
                     [
                         'slug' => 'hospitality-lifestyle-brands',
                         'image_id' => 0,
+                        'hero_image_id' => 0,
                         'title_en' => 'Hospitality & Lifestyle Brands',
                         'title_es' => 'Hospitalidad y Marcas de Estilo de Vida',
                         'hero_lead_en' => 'Content that turns visitors into',
@@ -68,6 +71,7 @@ if (!function_exists('dg_cw_get_default_settings')) {
                     [
                         'slug' => 'corporate-business-content',
                         'image_id' => 0,
+                        'hero_image_id' => 0,
                         'title_en' => 'Corporate & Business Content',
                         'title_es' => 'Contenido Corporativo y de Negocios',
                         'hero_lead_en' => 'Professional content that makes your company',
@@ -209,6 +213,7 @@ if (!function_exists('dg_cw_normalize_services')) {
             $normalized[] = [
                 'slug' => sanitize_title((string) ($item['slug'] ?? $title_en ?: $title_es ?: $defaults['slug'])),
                 'image_id' => absint($item['image_id'] ?? $defaults['image_id']),
+                'hero_image_id' => absint($item['hero_image_id'] ?? $item['image_id'] ?? ($defaults['hero_image_id'] ?? $defaults['image_id'])),
                 'title_en' => $title_en ?: $defaults['title_en'],
                 'title_es' => $title_es ?: $defaults['title_es'],
                 'hero_lead_en' => dg_cw_normalize_short_text($item['hero_lead_en'] ?? $defaults['hero_lead_en']) ?: $defaults['hero_lead_en'],
@@ -365,17 +370,71 @@ if (!function_exists('dg_cw_get_settings')) {
     }
 }
 
+if (!function_exists('dg_cw_get_lang_query_var')) {
+    function dg_cw_get_lang_query_var()
+    {
+        return 'dg_cw_lang';
+    }
+}
+
+if (!function_exists('dg_cw_get_lang_cookie_name')) {
+    function dg_cw_get_lang_cookie_name()
+    {
+        return 'dg_cw_lang';
+    }
+}
+
+if (!function_exists('dg_cw_normalize_lang_code')) {
+    function dg_cw_normalize_lang_code($lang = '')
+    {
+        $lang = strtolower(substr((string) $lang, 0, 2));
+
+        return in_array($lang, ['en', 'es'], true) ? $lang : '';
+    }
+}
+
 if (!function_exists('dg_cw_resolve_lang')) {
     function dg_cw_resolve_lang($lang = '')
     {
-        $lang = strtolower(substr((string) $lang, 0, 2));
-        if (in_array($lang, ['en', 'es'], true)) {
+        $lang = dg_cw_normalize_lang_code($lang);
+        if ($lang !== '') {
             return $lang;
+        }
+
+        $query_var = dg_cw_get_lang_query_var();
+        $request_lang = dg_cw_normalize_lang_code(wp_unslash($_GET[$query_var] ?? ''));
+        if ($request_lang !== '') {
+            return $request_lang;
+        }
+
+        $cookie_name = dg_cw_get_lang_cookie_name();
+        $cookie_lang = dg_cw_normalize_lang_code(wp_unslash($_COOKIE[$cookie_name] ?? ''));
+        if ($cookie_lang !== '') {
+            return $cookie_lang;
         }
 
         $locale = function_exists('determine_locale') ? determine_locale() : get_locale();
 
         return stripos((string) $locale, 'es_') === 0 ? 'es' : 'en';
+    }
+}
+
+if (!function_exists('dg_cw_resolve_frontend_lang')) {
+    function dg_cw_resolve_frontend_lang($fallback_lang = '')
+    {
+        $query_var = dg_cw_get_lang_query_var();
+        $request_lang = dg_cw_normalize_lang_code(wp_unslash($_GET[$query_var] ?? ''));
+        if ($request_lang !== '') {
+            return $request_lang;
+        }
+
+        $cookie_name = dg_cw_get_lang_cookie_name();
+        $cookie_lang = dg_cw_normalize_lang_code(wp_unslash($_COOKIE[$cookie_name] ?? ''));
+        if ($cookie_lang !== '') {
+            return $cookie_lang;
+        }
+
+        return dg_cw_resolve_lang($fallback_lang);
     }
 }
 

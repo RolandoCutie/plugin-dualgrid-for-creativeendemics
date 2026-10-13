@@ -64,6 +64,7 @@ Shortcodes live in:
 
 Registered shortcodes:
 
+- `[cw_language_toggle]`
 - `[cw_hero]`
 - `[cw_services]`
 - `[cw_about]`
@@ -72,7 +73,8 @@ Registered shortcodes:
 
 ### Section relationships
 
-- `[cw_hero]` reads its four rotating slides from the active service items
+- `[cw_language_toggle]` persists the EN/ES choice through a query arg + cookie so the landing can be switched from a header control
+- `[cw_hero]` reads its rotating slides from the active service items but uses a dedicated hero image per item
 - `[cw_services]` renders the editable service cards
 - `[cw_about]` renders the editorial two-column story block
 - `[cw_gallery]` renders the mosaic and its lightbox
@@ -87,6 +89,7 @@ Typography:
 Landing styles:
 
 - [creativewilds.css](/Users/rolandocutie/Documents/Proyectos/Wild Endemics Web Page/plugin dualgrid/dualgrid/css/creativewilds.css)
+- frontend assets are loaded globally so header-level language toggles work even when the header only accepts raw HTML
 
 Admin styles:
 
@@ -109,7 +112,7 @@ Admin entry points live in:
 The admin provides:
 
 - a dashboard page
-- a content editor page with tabs
+- a content editor page with deep-linkable tabs
 - service repeaters
 - gallery repeaters
 - Media Library image pickers

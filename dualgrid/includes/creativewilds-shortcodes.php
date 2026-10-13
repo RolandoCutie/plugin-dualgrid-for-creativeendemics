@@ -29,6 +29,7 @@ add_action('wp_enqueue_scripts', function () {
         ['dualgrid-font-space-grotesk', 'dualgrid-font-inter', 'dualgrid-font-jetbrains-mono'],
         DUALGRID_VERSION
     );
+
     wp_register_style(
         'dualgrid-creativewilds',
         DUALGRID_PLUGIN_URL . 'css/creativewilds.css',
@@ -44,13 +45,10 @@ add_action('wp_enqueue_scripts', function () {
     );
 });
 
-if (!function_exists('dg_cw_enqueue_assets')) {
-    function dg_cw_enqueue_assets()
+if (!function_exists('dg_cw_localize_frontend_assets')) {
+    function dg_cw_localize_frontend_assets()
     {
         static $localized = false;
-
-        wp_enqueue_style('dualgrid-creativewilds');
-        wp_enqueue_script('dualgrid-creativewilds');
 
         if ($localized) {
             return;
@@ -61,6 +59,9 @@ if (!function_exists('dg_cw_enqueue_assets')) {
             'window.dgCreativeWilds=' . wp_json_encode([
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('dg_cw_contact_submit'),
+                'currentLang' => dg_cw_resolve_frontend_lang(),
+                'langQueryVar' => dg_cw_get_lang_query_var(),
+                'langCookieName' => dg_cw_get_lang_cookie_name(),
             ]) . ';',
             'before'
         );
@@ -68,6 +69,19 @@ if (!function_exists('dg_cw_enqueue_assets')) {
         $localized = true;
     }
 }
+
+if (!function_exists('dg_cw_enqueue_assets')) {
+    function dg_cw_enqueue_assets()
+    {
+        wp_enqueue_style('dualgrid-creativewilds');
+        wp_enqueue_script('dualgrid-creativewilds');
+        dg_cw_localize_frontend_assets();
+    }
+}
+
+add_action('wp_enqueue_scripts', function () {
+    dg_cw_enqueue_assets();
+}, 20);
 
 if (!function_exists('dg_cw_render_media')) {
     function dg_cw_render_media($image_id, $size, $class, $alt = '')
@@ -137,6 +151,51 @@ if (!function_exists('dg_cw_render_contact_icon')) {
     }
 }
 
+if (!function_exists('dg_cw_get_client_logo_url')) {
+    function dg_cw_get_client_logo_url()
+    {
+        $logo_path = DUALGRID_PLUGIN_DIR . 'assets/logo.svg';
+
+        if (!file_exists($logo_path) || !is_readable($logo_path)) {
+            return '';
+        }
+        return DUALGRID_PLUGIN_URL . 'assets/logo.svg';
+    }
+}
+
+add_shortcode('cw_language_toggle', function ($atts = []) {
+    dg_cw_enqueue_assets();
+
+    $atts = shortcode_atts([
+        'en_label' => 'EN',
+        'es_label' => 'ES',
+        'title' => __('Cambiar idioma', 'dualgrid'),
+    ], $atts, 'cw_language_toggle');
+
+    $current_lang = dg_cw_resolve_frontend_lang();
+
+    ob_start();
+    ?>
+    <div class="dg-cw-language-toggle" data-dg-cw-language-toggle role="group" aria-label="<?php echo esc_attr($atts['title']); ?>">
+        <button
+            type="button"
+            class="dg-cw-language-toggle__button<?php echo $current_lang === 'en' ? ' is-active' : ''; ?>"
+            data-dg-cw-lang-switch="en"
+            aria-pressed="<?php echo $current_lang === 'en' ? 'true' : 'false'; ?>">
+            <?php echo esc_html($atts['en_label']); ?>
+        </button>
+        <button
+            type="button"
+            class="dg-cw-language-toggle__button<?php echo $current_lang === 'es' ? ' is-active' : ''; ?>"
+            data-dg-cw-lang-switch="es"
+            aria-pressed="<?php echo $current_lang === 'es' ? 'true' : 'false'; ?>">
+            <?php echo esc_html($atts['es_label']); ?>
+        </button>
+    </div>
+    <?php
+    return ob_get_clean();
+});
+
 add_shortcode('cw_hero', function ($atts = []) {
     dg_cw_enqueue_assets();
 
@@ -148,7 +207,7 @@ add_shortcode('cw_hero', function ($atts = []) {
         'interval' => 6000,
     ], $atts, 'cw_hero');
 
-    $lang = dg_cw_resolve_lang($atts['lang']);
+    $lang = dg_cw_resolve_frontend_lang($atts['lang']);
     $settings = dg_cw_get_settings();
     $services = dg_cw_get_active_services($settings);
     $contact_href = '#' . sanitize_title_with_dashes((string) $atts['contact_anchor']);
@@ -171,7 +230,7 @@ add_shortcode('cw_hero', function ($atts = []) {
             ?>
             <article class="dg-cw-hero-slide<?php echo $index === 0 ? ' is-active' : ''; ?>" data-slide-index="<?php echo esc_attr($index); ?>">
                 <div class="dg-cw-hero-media-wrap">
-                    <?php echo dg_cw_render_media($service['image_id'], 'full', 'dg-cw-hero-media', $title); ?>
+                    <?php echo dg_cw_render_media($service['hero_image_id'], 'full', 'dg-cw-hero-media', $title); ?>
                     <span class="dg-cw-hero-overlay dg-cw-hero-overlay--vertical" aria-hidden="true"></span>
                     <span class="dg-cw-hero-overlay dg-cw-hero-overlay--horizontal" aria-hidden="true"></span>
                 </div>
@@ -208,7 +267,7 @@ add_shortcode('cw_services', function ($atts = []) {
         'contact_anchor' => 'contact',
     ], $atts, 'cw_services');
 
-    $lang = dg_cw_resolve_lang($atts['lang']);
+    $lang = dg_cw_resolve_frontend_lang($atts['lang']);
     $settings = dg_cw_get_settings();
     $section = $settings['services'];
     $services = dg_cw_get_active_services($settings);
@@ -258,17 +317,21 @@ add_shortcode('cw_about', function ($atts = []) {
 
     $atts = shortcode_atts([
         'lang' => '',
-        'id' => 'about',
+        'id' => 'about-us',
     ], $atts, 'cw_about');
 
-    $lang = dg_cw_resolve_lang($atts['lang']);
+    $lang = dg_cw_resolve_frontend_lang($atts['lang']);
     $settings = dg_cw_get_settings();
     $section = $settings['about'];
     $chips = $lang === 'es' ? ($section['chips_es'] ?? []) : ($section['chips_en'] ?? []);
+    $about_id = sanitize_title_with_dashes((string) $atts['id']);
 
     ob_start();
     ?>
-    <section id="<?php echo esc_attr(sanitize_title_with_dashes((string) $atts['id'])); ?>" class="dg-cw-section dg-cw-about">
+    <section id="<?php echo esc_attr($about_id); ?>" class="dg-cw-section dg-cw-about">
+        <?php if ($about_id !== 'about'): ?>
+            <span id="about" class="dg-cw-anchor" aria-hidden="true"></span>
+        <?php endif; ?>
         <div class="dg-cw-shell dg-cw-about-grid">
             <div class="dg-cw-about-copy dg-cw-reveal">
                 <p class="dg-cw-eyebrow"><?php echo esc_html(dg_cw_get_translated_value($section, 'eyebrow', $lang)); ?></p>
@@ -299,7 +362,7 @@ add_shortcode('cw_gallery', function ($atts = []) {
         'id' => 'work',
     ], $atts, 'cw_gallery');
 
-    $lang = dg_cw_resolve_lang($atts['lang']);
+    $lang = dg_cw_resolve_frontend_lang($atts['lang']);
     $settings = dg_cw_get_settings();
     $section = $settings['gallery'];
     $brand = $settings['general']['brand_name'];
@@ -383,11 +446,12 @@ add_shortcode('cw_contact', function ($atts = []) {
         'id' => 'contact',
     ], $atts, 'cw_contact');
 
-    $lang = dg_cw_resolve_lang($atts['lang']);
+    $lang = dg_cw_resolve_frontend_lang($atts['lang']);
     $settings = dg_cw_get_settings();
     $section = $settings['contact'];
     $services = dg_cw_get_active_services($settings);
     $background = $section['image_id'] ? wp_get_attachment_image_url($section['image_id'], 'full') : '';
+    $client_logo_url = dg_cw_get_client_logo_url();
     $labels = [
         'name' => $lang === 'es' ? 'Nombre' : 'Name',
         'email' => 'Email',
@@ -448,6 +512,12 @@ add_shortcode('cw_contact', function ($atts = []) {
             </div>
 
             <div class="dg-cw-contact-form-wrap dg-cw-reveal" style="--dg-cw-delay:0.1s;">
+                <?php if ($client_logo_url !== ''): ?>
+                    <div class="dg-cw-contact-form__badge" aria-hidden="true">
+                        <span class="dg-cw-contact-form__badge-shadow"></span>
+                        <img src="<?php echo esc_url($client_logo_url); ?>" alt="<?php echo esc_attr($settings['general']['brand_name']); ?>">
+                    </div>
+                <?php endif; ?>
                 <form class="dg-cw-contact-form"
                     data-dg-cw-contact-form
                     data-success-title="<?php echo esc_attr(dg_cw_get_translated_value($section, 'success_title', $lang)); ?>"

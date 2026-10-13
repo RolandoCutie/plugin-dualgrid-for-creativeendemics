@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Dualgrid - Componentes CreativeWilds
  * Description: Shortcodes y panel administrable para la land ing CreativeWilds.
- * Version: 3.4.1
+ * Version: 1.0.12
  * Author: RolandoCutie
  * Text Domain: dualgrid
  */
@@ -11,7 +11,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('DUALGRID_VERSION', '1.0.3');
+
+define('DUALGRID_VERSION', '1.0.33');
 define('DUALGRID_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('DUALGRID_PLUGIN_URL', plugin_dir_url(__FILE__));
 

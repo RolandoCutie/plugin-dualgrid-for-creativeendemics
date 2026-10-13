@@ -46,6 +46,21 @@ Recommended flow:
 5. add CSS in [creativewilds.css](/Users/rolandocutie/Documents/Proyectos/Wild Endemics Web Page/plugin dualgrid/dualgrid/css/creativewilds.css)
 6. add JS in [creativewilds.js](/Users/rolandocutie/Documents/Proyectos/Wild Endemics Web Page/plugin dualgrid/dualgrid/js/creativewilds.js) only when necessary
 
+## Language switching
+
+- use `[cw_language_toggle]` anywhere you need the EN / ES switcher, including a header template
+- leave section shortcodes without a fixed `lang` attribute when you want them to follow the switcher
+- custom buttons can also use the `data-dg-cw-lang-switch=\"en\"` or `data-dg-cw-lang-switch=\"es\"` attribute
+- the selected language is persisted with the `dg_cw_lang` query arg and cookie
+- frontend assets now load globally so Blocksy HTML header blocks can use the language switcher markup without needing a shortcode in the same template
+- the shared `.dg-cw-language-toggle` styles now switch from transparent-at-top to dark-on-sticky automatically based on scroll position
+
+## One-page anchors and brand assets
+
+- `[cw_hero]` keeps the default section anchor `#hero`
+- `[cw_about]` now defaults to `#about-us` and also leaves a legacy alias at `#about`
+- the contact card can render `assets/logo.svg` as the floating client badge, so replace that file when the client logo changes
+
 ## Repeater fields
 
 Services and gallery items already use repeaters.
@@ -56,6 +71,7 @@ Follow the existing pattern:
 - provide a `<template>`
 - clone rows in [admin-creativewilds.js](/Users/rolandocutie/Documents/Proyectos/Wild Endemics Web Page/plugin dualgrid/dualgrid/js/admin-creativewilds.js)
 - use Media Library pickers for images
+- keep `hero_image_id` separate from `image_id` when the same service item feeds both the hero and the services grid
 
 ## Contact workflow changes
 

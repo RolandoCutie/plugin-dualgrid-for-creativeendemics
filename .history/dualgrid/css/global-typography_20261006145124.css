@@ -1,0 +1,62 @@
+:root {
+    --dg-cw-font-heading: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    --dg-cw-font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+    --dg-cw-font-mono: "JetBrains Mono", "Courier New", monospace;
+}
+
+body,
+p,
+li,
+blockquote,
+figcaption,
+label,
+td,
+th,
+.entry-content,
+.elementor-widget-text-editor,
+.wp-block-paragraph {
+    font-family: var(--dg-cw-font-body) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.entry-title,
+.page-title,
+.post-title,
+.elementor-heading-title,
+.wp-block-heading,
+[class*="heading"],
+[class*="title"] {
+    font-family: var(--dg-cw-font-heading) !important;
+    letter-spacing: -0.03em;
+}
+
+button,
+.button,
+.btn,
+.elementor-button,
+.elementor-button-content-wrapper,
+input[type="submit"],
+input[type="button"],
+.wp-block-button__link,
+.ct-button,
+.wp-element-button {
+    font-family: var(--dg-cw-font-mono) !important;
+}
+
+small,
+label,
+.meta,
+.post-meta,
+.entry-meta,
+[class*="meta"],
+[class*="label"],
+[class*="tag"],
+[class*="badge"],
+[class*="eyebrow"] {
+    font-family: var(--dg-cw-font-mono) !important;
+}

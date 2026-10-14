@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 }
 
 
-define('DUALGRID_VERSION', '1.0.33');
+define('DUALGRID_VERSION', '1.0.8');
 define('DUALGRID_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('DUALGRID_PLUGIN_URL', plugin_dir_url(__FILE__));
 

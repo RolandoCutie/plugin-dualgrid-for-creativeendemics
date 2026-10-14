@@ -55,6 +55,7 @@ html {
     text-transform: uppercase;
     letter-spacing: 0.28em;
     font-size: 11px;
+    color: var(--dg-cw-gold);
 }
 
 .dg-cw-section h1,
@@ -78,6 +79,7 @@ html {
 .dg-cw-reveal.is-visible {
     opacity: 1;
     transform: translateY(0) scale(1);
+
 }
 
 .dg-cw-media {
@@ -112,6 +114,7 @@ html {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.22em;
+    border-radius: 10px;
 }
 
 .dg-cw-button--primary {
@@ -220,6 +223,7 @@ html {
     font-size: clamp(1.9rem, 4vw, 3.25rem);
     line-height: 1.02;
     letter-spacing: -0.035em;
+    padding-right: 34px;
 }
 
 .dg-cw-section-head__copy {
@@ -227,6 +231,7 @@ html {
     color: rgba(244, 246, 244, 0.72);
     font-size: 16px;
     line-height: 1.7;
+    padding-bottom: 24px;
 }
 
 .dg-cw-hero {
@@ -306,7 +311,7 @@ html {
     max-width: 46rem;
     display: grid;
     gap: 20px;
-    padding-bottom: 4px;
+    padding-bottom: 40px;
     position: relative;
     transform: translateY(6px);
 
@@ -427,18 +432,20 @@ html {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
     align-items: center;
-    gap: 48px;
+    gap: 98px;
 }
 
 .dg-cw-about-copy h2 {
     margin-top: 24px;
+    padding-right: 134px;
     font-size: clamp(1.8rem, 3.4vw, 2.9rem);
     line-height: 1.06;
 }
 
 .dg-cw-about-copy__body {
     margin-top: 24px;
-    max-width: 36rem;
+    margin-right: 44px;
+    max-width: 30rem;
     color: rgba(244, 246, 244, 0.76);
     font-size: 17px;
     line-height: 1.7;
@@ -462,13 +469,13 @@ html {
 }
 
 .dg-cw-meta-line {
-    margin-top: 28px;
+    margin-top: 28px !important;
     color: rgba(158, 166, 159, 0.75);
 }
 
+
 .dg-cw-about-media {
     position: relative;
-    aspect-ratio: 4 / 5;
     border: 1px solid var(--dg-cw-border);
     overflow: hidden;
 }

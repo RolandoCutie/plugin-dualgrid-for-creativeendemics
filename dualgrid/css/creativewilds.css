@@ -11,8 +11,6 @@
     --dg-cw-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-
-
 html {
     scroll-behavior: smooth;
 }
@@ -1125,6 +1123,7 @@ body .ct-sticky-container {
 }
 
 body .ct-sticky-container [data-sticky*="shrink"] {
+
     height: 84px !important;
     min-height: 84px !important;
 }
@@ -1146,12 +1145,12 @@ body .ct-sticky-container [data-row="middle"] .ct-container {
         padding-top: 3px !important;
         padding-bottom: 3px !important;
     }
-
     body .ct-sticky-container {
         height: 80px !important;
         min-height: 80px !important;
     }
-}
+    }
+
 
 @media (max-width: 767px) {
     body .ct-sticky-container {

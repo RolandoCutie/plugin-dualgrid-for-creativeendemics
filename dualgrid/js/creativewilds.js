@@ -273,27 +273,30 @@
             var headerPadding = '8px';
 
             if (isMobile) {
-                headerHeight = '22px';
-                headerPadding = '2px';
+                headerHeight = '82px';
+                headerPadding = '8px';
             } else if (isTablet) {
-                headerHeight = '20px';
-                headerPadding = '2px';
+                headerHeight = '80px';
+                headerPadding = '3px';
             }
-            
+
             stickyContainers.forEach(function (stickyContainer) {
                 var stickyInner = stickyContainer.querySelector('[data-sticky*="shrink"]');
                 var stickyRow = stickyContainer.querySelector('[data-row="middle"]');
                 var stickyInnerContainer = stickyContainer.querySelector('[data-row="middle"] .ct-container');
 
+
                 stickyContainer.style.height = headerHeight;
                 stickyContainer.style.minHeight = headerHeight;
 
                 if (stickyInner) {
+
                     stickyInner.style.minHeight = headerHeight;
                     stickyInner.style.height = headerHeight;
                 }
 
                 if (stickyRow) {
+
                     stickyRow.style.minHeight = headerHeight;
                     stickyRow.style.height = headerHeight;
                     stickyRow.style.setProperty('--shrink-height', headerHeight);
